@@ -1,0 +1,10 @@
+;WITH CTE_Functions
+AS
+(
+	SELECT X, Y, ROW_NUMBER() OVER (PARTITION BY (X + Y), ABS(X-Y) ORDER BY X DESC) AS RowNumber
+	FROM Functions WITH (NOLOCK)	
+)
+SELECT DISTINCT X, Y
+FROM CTE_Functions
+WHERE RowNumber > 1
+AND X <= Y
